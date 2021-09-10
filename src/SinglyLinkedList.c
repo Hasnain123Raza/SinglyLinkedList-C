@@ -111,7 +111,7 @@ int popValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList)
 
 int insertValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int index, int value)
 {
-	if (index >= singlyLinkedList->length)
+	if (index > singlyLinkedList->length)
 		exit(1);
 
 	Node *newNode = malloc(sizeof(Node));
