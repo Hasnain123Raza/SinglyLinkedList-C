@@ -1,6 +1,12 @@
-#include <stdlib.h>
-
 #include "SinglyLinkedList.h"
+
+void terminate(const char *message)
+{
+	printf("%s", message);
+	exit(EXIT_FAILURE);
+}
+
+
 
 SinglyLinkedList *createSinglyLinkedList()
 {
@@ -10,14 +16,15 @@ SinglyLinkedList *createSinglyLinkedList()
 
 	singlyLinkedList->length = 0;
 	singlyLinkedList->head = NULL;
+	singlyLinkedList->tail = NULL;
 
 	return singlyLinkedList;
 }
 
 void destroySinglyLinkedList(SinglyLinkedList *singlyLinkedList)
 {
-	Node *previousNode = NULL;
-	Node *currentNode = singlyLinkedList->head;
+	SinglyLinkedListNode *previousNode = NULL;
+	SinglyLinkedListNode *currentNode = singlyLinkedList->head;
 
 	while (currentNode)
 	{
@@ -34,9 +41,12 @@ void destroySinglyLinkedList(SinglyLinkedList *singlyLinkedList)
 int getValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int index)
 {
 	if (index >= singlyLinkedList->length)
-		exit(1);
+		terminate("Attempt to get value at an index out of bounds\n");
 
-	Node *currentNode = singlyLinkedList->head;
+	if (index == singlyLinkedList->length - 1)
+		return singlyLinkedList->tail->value;
+
+	SinglyLinkedListNode *currentNode = singlyLinkedList->head;
 	for (int counter = 0; counter < index; counter++)
 		currentNode = currentNode->next;
 
@@ -46,9 +56,15 @@ int getValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int in
 void setValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int index, int value)
 {
 	if (index >= singlyLinkedList->length)
-		exit(1);
+		terminate("Attempt to set value at an index out of bounds\n");
 
-	Node *currentNode = singlyLinkedList->head;
+	if (index == singlyLinkedList->length - 1)
+	{
+		singlyLinkedList->tail->value = value;
+		return;
+	}
+
+	SinglyLinkedListNode *currentNode = singlyLinkedList->head;
 	for (int counter = 0; counter < index; counter++)
 		currentNode = currentNode->next;
 
@@ -57,7 +73,7 @@ void setValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int i
 
 int pushValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, int value)
 {
-	Node *newNode = malloc(sizeof(Node));
+	SinglyLinkedListNode *newNode = malloc(sizeof(SinglyLinkedListNode));
 	if (!newNode)
 		return 0;
 	newNode->value = value;
@@ -67,14 +83,11 @@ int pushValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, int value)
 		singlyLinkedList->head = newNode;
 	}
 	else
-	{
-		Node *tailNode = singlyLinkedList->head;
-		while (tailNode->next)
-			tailNode = tailNode->next;
-		
-		tailNode->next = newNode;
+	{		
+		singlyLinkedList->tail->next = newNode;
 	}
 
+	singlyLinkedList->tail = newNode;
 	singlyLinkedList->length++;
 	return 1;
 }
@@ -82,25 +95,25 @@ int pushValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, int value)
 int popValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList)
 {
 	if (singlyLinkedList->length == 0)
-		exit(1);
+		terminate("Attempt to pop an empty list\n");
 
-	Node *tailNode = singlyLinkedList->head;
+	SinglyLinkedListNode *tailNode = singlyLinkedList->tail;
 
 	if (singlyLinkedList->length == 1)
 	{
 		singlyLinkedList->head = NULL;
+		singlyLinkedList->tail = NULL;
 	}
 	else
 	{
-		Node *nodeBeforeTailNode = NULL;
+		SinglyLinkedListNode *nodeBeforeTailNode = singlyLinkedList->head;
 		
-		while (tailNode->next)
-		{
-			nodeBeforeTailNode = tailNode;
-			tailNode = tailNode->next;
-		}
+		while (nodeBeforeTailNode->next != tailNode)
+			nodeBeforeTailNode = nodeBeforeTailNode->next;
+		
 
 		nodeBeforeTailNode->next = NULL;
+		singlyLinkedList->tail = nodeBeforeTailNode;
 	}
 
 	int tailValue = tailNode->value;
@@ -112,9 +125,9 @@ int popValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList)
 int insertValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int index, int value)
 {
 	if (index > singlyLinkedList->length)
-		exit(1);
+		terminate("Attempt to insert value at an index out of bounds\n");
 
-	Node *newNode = malloc(sizeof(Node));
+	SinglyLinkedListNode *newNode = malloc(sizeof(SinglyLinkedListNode));
 	if (!newNode)
 		return 0;
 	newNode->value = value;
@@ -122,6 +135,7 @@ int insertValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int
 	if (singlyLinkedList->length == 0)
 	{
 		singlyLinkedList->head = newNode;
+		singlyLinkedList->tail = newNode;
 	}
 	else
 	{
@@ -130,14 +144,19 @@ int insertValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int
 			newNode->next = singlyLinkedList->head;
 			singlyLinkedList->head = newNode;
 		}
+		else if (index == singlyLinkedList->length)
+		{
+			singlyLinkedList->tail->next = newNode;
+			singlyLinkedList->tail = newNode;
+		}
 		else
 		{
-			Node *targetNode = singlyLinkedList->head;
+			SinglyLinkedListNode *targetNode = singlyLinkedList->head;
 	
 			for (int counter = 0; counter < index - 1; counter++)
 				targetNode = targetNode->next;
 			
-			Node *nextNode = targetNode->next;
+			SinglyLinkedListNode *nextNode = targetNode->next;
 			targetNode->next = newNode;
 			newNode->next = nextNode;
 		}
@@ -150,13 +169,14 @@ int insertValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int
 int removeValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int index)
 {
 	if (singlyLinkedList->length == 0 || index >= singlyLinkedList->length)
-		exit(1);
+		terminate("Attempt to remove value at an index out of bounds\n");
 
-	Node *targetNode = singlyLinkedList->head;
+	SinglyLinkedListNode *targetNode = singlyLinkedList->head;
 
 	if (singlyLinkedList->length == 1)
 	{
 		singlyLinkedList->head = NULL;
+		singlyLinkedList->tail = NULL;
 	}
 	else
 	{
@@ -166,15 +186,18 @@ int removeValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int
 		}
 		else
 		{
-			Node *nodeBeforeTargetNode;
+			SinglyLinkedListNode *nodeBeforeTargetNode;
 			
 			for (int counter = 0; counter < index; counter++)
 			{
 				nodeBeforeTargetNode = targetNode;
 				targetNode = targetNode->next;
 			}
-	
+		
 			nodeBeforeTargetNode->next = targetNode->next;
+
+			if (singlyLinkedList->tail == targetNode)
+				singlyLinkedList->tail = nodeBeforeTargetNode;
 		}
 	}
 

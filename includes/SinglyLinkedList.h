@@ -1,15 +1,18 @@
 #if !defined(SINGLYLINKEDLIST_H)
 #define SINGLYLINKEDLIST_H
 
-typedef struct Node {
-	int value;
-	struct Node *next;
-} Node;
+#include <stdlib.h>
+#include <stdio.h>
 
-typedef struct SinglyLinkedList {
+typedef struct SinglyLinkedListNode {
+	int value;
+	struct SinglyLinkedListNode *next;
+} SinglyLinkedListNode;
+
+typedef struct {
 	unsigned int length;
-	Node *head;
-	
+	SinglyLinkedListNode *head;
+	SinglyLinkedListNode *tail;
 } SinglyLinkedList;
 
 /* Attempts to allocate a new SinglyLinkedList. Returns the SinglyLinkedList if successfull,

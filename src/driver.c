@@ -6,9 +6,14 @@ void printSinglyLinkedList(SinglyLinkedList *singlyLinkedList)
 {
 	int length = singlyLinkedList->length;
 	printf("Length: %d\n", length);
+	if (length > 0)
+	{
+		printf("Head: %d\n", singlyLinkedList->head->value);
+		printf("Tail: %d\n", singlyLinkedList->tail->value);
+	}
 
 	int counter = 0;
-	Node *node = singlyLinkedList->head;
+	SinglyLinkedListNode *node = singlyLinkedList->head;
 	while (counter < length)
 	{
 		printf("%d: %u\n", counter, node->value);
