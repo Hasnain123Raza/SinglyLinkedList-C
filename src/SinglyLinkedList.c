@@ -1,12 +1,14 @@
 #include "SinglyLinkedList.h"
 
+/* Utility Functions */
+
 void terminate(const char *message)
 {
 	printf("%s", message);
 	exit(EXIT_FAILURE);
 }
 
-
+/* Constructor and Destructor */
 
 SinglyLinkedList *createSinglyLinkedList()
 {
@@ -36,7 +38,7 @@ void destroySinglyLinkedList(SinglyLinkedList *singlyLinkedList)
 	free(singlyLinkedList);
 }
 
-
+/* List Abstract Data Type Functions */
 
 int getValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int index)
 {
@@ -207,7 +209,7 @@ int removeValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int
 	return targetValue;
 }
 
-
+/* Singly Linked List Functions */
 
 SinglyLinkedListNode *getNodeSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int index)
 {
