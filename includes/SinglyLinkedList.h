@@ -1,4 +1,4 @@
-#if !defined(SINGLYLINKEDLIST_H)
+#ifndef SINGLYLINKEDLIST_H
 #define SINGLYLINKEDLIST_H
 
 #include <stdlib.h>
