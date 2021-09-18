@@ -64,6 +64,15 @@ int main(void)
 	removeValueSinglyLinkedList(singlyLinkedList, 0);
 	printSinglyLinkedList(singlyLinkedList);
 
+	printf("Adding 99 after the last node\n");
+	SinglyLinkedListNode *node = getNodeSinglyLinkedList(singlyLinkedList, singlyLinkedList->length - 1);
+	addValueAfterNodeSinglyLinkedList(singlyLinkedList, node, 99);
+	printSinglyLinkedList(singlyLinkedList);
+
+	printf("Removing the value after second last node\n");
+	removeValueAfterNodeSinglyLinkedList(singlyLinkedList, node);
+	printSinglyLinkedList(singlyLinkedList);
+
 	printf("Destroying the SinglyLinkedList\n");
 	destroySinglyLinkedList(singlyLinkedList);
 

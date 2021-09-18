@@ -38,4 +38,13 @@ int insertValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int
  * SinglyLinkedList is 0 or if the index is out of bounds */
 int removeValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int index);
 
+/* Returns the node specified by index. Exits if the index is out of bounds */
+SinglyLinkedListNode* getNodeSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int index);
+/* Attempts to allocate a new node after the given node. Returns 0 upon failure and 1
+ * upon success */
+int addValueAfterNodeSinglyLinkedList(SinglyLinkedList *singlyLinkedList, SinglyLinkedListNode *node, int value);
+/* Removes the node after the given node and returns its value. Exits if there is no node
+ * after the given node */
+int removeValueAfterNodeSinglyLinkedList(SinglyLinkedList *singlyLinkedList, SinglyLinkedListNode *node);
+
 #endif

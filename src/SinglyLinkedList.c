@@ -206,3 +206,52 @@ int removeValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int
 	singlyLinkedList->length--;
 	return targetValue;
 }
+
+
+
+SinglyLinkedListNode *getNodeSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int index)
+{
+	if (index >= singlyLinkedList->length)
+		terminate("Attempt to get node at an index out of bounds\n");
+
+	if (index == singlyLinkedList->length - 1)
+		return singlyLinkedList->tail;
+
+	SinglyLinkedListNode *currentNode = singlyLinkedList->head;
+	for (int counter = 0; counter < index; counter++)
+		currentNode = currentNode->next;
+
+	return currentNode;
+}
+
+int addValueAfterNodeSinglyLinkedList(SinglyLinkedList *singlyLinkedList, SinglyLinkedListNode *node, int value)
+{
+	SinglyLinkedListNode *newNode = malloc(sizeof(SinglyLinkedListNode));
+	if (!newNode)
+		return 0;
+	newNode->value = value;
+
+	newNode->next = node->next;
+	node->next = newNode;
+	if (node = singlyLinkedList->tail)
+		singlyLinkedList->tail = newNode;
+	
+	singlyLinkedList->length++;
+	return 1;
+}
+
+int removeValueAfterNodeSinglyLinkedList(SinglyLinkedList *singlyLinkedList, SinglyLinkedListNode *node)
+{
+	if (node->next == NULL)
+		terminate("Attempt to remove a NULL node\n");
+
+	SinglyLinkedListNode *targetNode = node->next;
+	node->next = targetNode->next;
+	if (targetNode == singlyLinkedList->tail)
+		singlyLinkedList->tail = node;
+
+	int targetValue = targetNode->value;
+	free(targetNode);
+	singlyLinkedList->length--;
+	return targetValue;
+}
