@@ -1,11 +1,11 @@
 all: driver build
 
 
-driver:
+driver: src/driver.c src/SinglyLinkedList.c
 	mkdir bin
 	gcc src/driver.c src/SinglyLinkedList.c -Iincludes -o bin/driver
 
-build:
+build: src/SinglyLinkedList.c
 	mkdir build
 	gcc -c src/SinglyLinkedList.c -Iincludes -o build/SinglyLinkedList.o
 	ar rcs build/libSinglyLinkedList.a build/SinglyLinkedList.o
