@@ -169,7 +169,10 @@ int insertValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int
 
 int removeValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int index)
 {
-	if (singlyLinkedList->length == 0 || index >= singlyLinkedList->length)
+	if (singlyLinkedList->length == 0)
+		terminate("Attempt to remove value from an empty list\n");
+
+	if (index >= singlyLinkedList->length)
 		terminate("Attempt to remove value at an index out of bounds\n");
 
 	SinglyLinkedListNode *targetNode = singlyLinkedList->head;
