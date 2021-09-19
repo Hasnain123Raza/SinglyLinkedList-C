@@ -158,9 +158,8 @@ int insertValueSinglyLinkedList(SinglyLinkedList *singlyLinkedList, unsigned int
 			for (int counter = 0; counter < index - 1; counter++)
 				targetNode = targetNode->next;
 			
-			SinglyLinkedListNode *nextNode = targetNode->next;
+			newNode->next = targetNode->next;
 			targetNode->next = newNode;
-			newNode->next = nextNode;
 		}
 	}
 
